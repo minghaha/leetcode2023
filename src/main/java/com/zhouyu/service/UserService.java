@@ -1,8 +1,7 @@
 package com.zhouyu.service;
 
-import com.spring.Component;
-import com.spring.ComponentScan;
-import com.spring.Scope;
+
+import org.springframework.stereotype.Component;
 
 /**
  * Created on 2023/1/31.

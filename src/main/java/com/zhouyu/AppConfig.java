@@ -1,6 +1,7 @@
 package com.zhouyu;
 
-import com.spring.ComponentScan;
+
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Created on 2023/1/31.
