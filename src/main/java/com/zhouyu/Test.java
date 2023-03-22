@@ -8,7 +8,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import javax.xml.crypto.Data;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created on 2023/1/31.
@@ -24,16 +27,19 @@ public class Test {
         //
         //UserService userService1 = (UserService)applicationContext.getBean("userService");
         //System.out.println(userService1);
-
+        //PriorityQueue
+        //
         AnnotationConfigApplicationContext applicationContext =new AnnotationConfigApplicationContext(AppConfig.class);
         UserService userService = (UserService) applicationContext.getBean("userService");
-        //String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-        //System.out.println(beanDefinitionNames);
-
-        //UserService userService = (UserService)applicationContext.getBean("userService");
+        ////String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+        ////System.out.println(beanDefinitionNames);
+        //
+        ////UserService userService = (UserService)applicationContext.getBean("userService");
         userService.test();
 
         //System.out.println(new Date());
+
+
 
     }
 
