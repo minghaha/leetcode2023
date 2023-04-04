@@ -16,78 +16,85 @@ class Solution {
             return null;
         }
 
+        if(k==1){
+            return head;
+        }
 
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
 
-        //int n = 0;
-        //while(dummy != null){
-        //    n++;
-        //    dummy = dummy.next;
-        //}
-        //
+
+
+        int n = -1;
+        while(dummy != null){
+            n++;
+            dummy = dummy.next;
+        }
+
         //System.out.println("n = " + n);
-        //
-        //int left = 0;
-        //int right = 0;
 
-        //ListNode curr= head;
-        //for (int i = 0; i < ; i++) {
-        //
-        //}
+        ListNode dummy1 = new ListNode(-1);
+        dummy1.next = head;
+        int[] reverseArray = new int[n];
+        int left ;
+        int right ;
+        for ( left = 1,right = left+k-1; right <= n; left=right+1,right = left+k-1) {
+            //System.out.println("left = " + left);
+            //System.out.println("right = " + right);
+            //闭区间【1,2】
+            dummy1 =reverseBetween(dummy1.next, left, right);
 
-        //左闭又开区间[0,2)
-        dummy.next =reverseBetween(dummy.next, 0, 2);
-        dummy.next =reverseBetween(dummy.next, 3, 5);
-        dummy.next =reverseBetween(dummy.next, 6, 8);
-        return  dummy.next;
+            //ListNode dummy3 = new ListNode(-1);
+            //dummy3.next = dummy1;
+            //while(dummy3!=null) {
+            //    System.out.print(" dummy3.val: " + dummy3.val);
+            //    dummy3 = dummy3.next;
+            //}
+
+        }
+
+        return  dummy1.next;
     }
-
-    ListNode reverseBetween(ListNode head, int left, int right) {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
         if (head == null || head.next == null || left == right) {
             return head;
         }
 
-        //记录结果
+
+        //虚拟节点为了避免头节点为空
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
 
-        //只想要反转那个左节点的前一个节点
-        ListNode pre=dummy;
-        for (int i = 1; i < left; i++) {
-            pre =pre.next;
+        //分别记录要反转的前节点和要反转的第一个节点
+        ListNode currDummy = dummy;
+        ListNode prevDummy = null;
+
+        ListNode prev = null;
+        ListNode curr = null;
+
+        for (int i = 0; i < left; i++) {
+            prevDummy = currDummy;
+            currDummy = currDummy.next;
+        }
+        curr = currDummy;
+
+        //反转范围内的节点
+        for (int i = left; i <= right && curr !=null; i++){
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
 
+        //拼接节点，反转前的结点 拼反转后的头结点
+        prevDummy.next = prev;
+        //反转后的最后一个节点拼接right后的那个节点
+        currDummy.next = curr;
 
-        //分别记录当前和下一个节点，为反转做准备
-        ListNode curr = pre.next;
-        ListNode tail = curr.next;
-        System.out.println("curr: " + curr.val);
-        System.out.println("tail: " + tail.val);
 
-        for (int i = left; i <right-1 ; i++) {
-            ListNode next = tail.next;
-            tail.next = curr;
-            curr = tail;
-            tail = next;
-        }
-
-        //System.out.println("curr: "+curr.val);
-        //System.out.println("tail: "+tail.val);
-
-        //注意操作顺序，否则会导致链表结构问题
-        pre.next.next = tail;
-        pre.next = curr;
-
-        ListNode dummy2 = dummy;
-        while(dummy2!=null) {
-            System.out.print("  dummy2:  " + dummy2.val);
-            dummy2 = dummy2.next;
-        }
-        System.out.println();
-
-        return dummy.next;
+        return dummy;
 
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)

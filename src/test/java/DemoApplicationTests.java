@@ -1,26 +1,35 @@
-
-import com.zhouyu.service.UserService;
-import com.zhouyu.service.impl.UserServiceImpl;
-import org.aopalliance.intercept.MethodInvocation;
+import com.Application;
+import com.service.UserService;
+import com.service.serviceImpl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.test.context.BootstrapWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.sql.SQLException;
 
-@SpringBootTest
-class DemoApplicationTests {
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = Application.class)
+public class DemoApplicationTests {
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
 
     }
 
@@ -31,17 +40,15 @@ class DemoApplicationTests {
         UserService userservice = new UserServiceImpl();
         Enhancer enchancer = new Enhancer();
         enchancer.setSuperclass(UserService.class);
-        enchancer.setCallbacks(new Callback[] {
-                new MethodInterceptor() {
-                    @Override
-                    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-                        System.out.println("cglib before " );
-                        Object invoke = methodProxy.invoke(userservice, objects);
-                        System.out.println("cglib  after");
-                        return invoke;
-                    }
-                }
-        });
+        enchancer.setCallbacks(new Callback[]{new MethodInterceptor() {
+            @Override
+            public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+                System.out.println("cglib before ");
+                Object invoke = methodProxy.invoke(userservice, objects);
+                System.out.println("cglib  after");
+                return invoke;
+            }
+        }});
 
         UserService userService = (UserService) enchancer.create();
         userService.test();
@@ -50,7 +57,7 @@ class DemoApplicationTests {
 
 
     @Test
-    void testJdkProxy(){
+    public void testJdkProxy() {
         UserServiceImpl target = new UserServiceImpl();
         Object proxy = Proxy.newProxyInstance(UserServiceImpl.class.getClassLoader(), new Class[]{UserService.class}, new InvocationHandler() {
             @Override
@@ -69,7 +76,7 @@ class DemoApplicationTests {
 
 
     @Test
-    void testProxyFactory(){
+    public  void testProxyFactory() {
 
         UserServiceImpl userServiceImpl = new UserServiceImpl();
         ProxyFactory proxyFactory = new ProxyFactory();
@@ -87,6 +94,26 @@ class DemoApplicationTests {
 
     }
 
+    @Resource
+    @Qualifier("oneDataSource")
+    DataSource oneDataSource;
+
+    @Resource
+    @Qualifier("twoDataSource")
+    DataSource twoDataSource;
+
+    @Resource
+    UserService userService;
+
+    @Test
+    public void dataSource() throws SQLException {
+        userService.test();
+
+
+        System.out.println(oneDataSource);
+        System.out.println(twoDataSource);
+
+    }
 
 }
 
