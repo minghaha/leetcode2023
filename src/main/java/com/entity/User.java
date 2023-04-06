@@ -15,8 +15,8 @@ import lombok.experimental.Accessors;
  **/
 @Data
 @Accessors(chain = true)
-@ApiModel(value = "Users对象", description = "")
-public class Users implements Serializable {
+@ApiModel(value = "User对象", description = "")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

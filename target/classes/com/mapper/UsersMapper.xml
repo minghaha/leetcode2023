@@ -12,5 +12,8 @@
         id
     </sql>
 
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT * FROM users
+    </select>
 
 </mapper>

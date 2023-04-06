@@ -1,8 +1,4 @@
 import com.Application;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.entity.Users;
-import com.mapper.UsersMapper;
-import com.service.IUsersService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -92,13 +88,9 @@ public class DemoApplicationTests {
     @Qualifier("twoDataSource")
     DataSource twoDataSource;
 
-    @Resource
-    IUsersService usersService;
-
 
     @Test
     public void dataSource() throws SQLException {
-        usersService.list();
 
         System.out.println(oneDataSource);
         System.out.println(twoDataSource);
