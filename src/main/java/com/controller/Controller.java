@@ -1,13 +1,19 @@
-package com;
+package com.controller;
 
-import com.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.entity.Users;
+import com.mapper.UsersMapper;
+import com.service.IUsersService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created on 2023/4/4.
@@ -15,6 +21,7 @@ import java.sql.SQLException;
  * @author lichuanming
  */
 @RestController
+@Slf4j
 public class Controller {
 
     @Autowired
@@ -25,16 +32,22 @@ public class Controller {
     @Qualifier("twoDataSource")
     DataSource twoDataSource;
 
-    @Autowired
-    UserService userService;
+
+
+    @Resource
+    private IUsersService iUsersService;
+
 
 
     @GetMapping("/")
     public void test(){
-        userService.test();
+        //userService.test();
+        //
+        //
+        //System.out.println(oneDataSource);
+        //System.out.println(twoDataSource);
+        List<Users> list = iUsersService.list();
+        System.out.println(list);
 
-
-        System.out.println(oneDataSource);
-        System.out.println(twoDataSource);
     }
 }
